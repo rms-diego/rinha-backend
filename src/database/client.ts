@@ -1,8 +1,16 @@
 import mysql from "mysql2/promise";
 
-const bootstrapMysql = async () => {
-  const client = await clientMysql();
+const { DATABASE_HOST, DATABASE_PORT, DATABASE_USER, DATABASE_PASSWORD } =
+  process.env;
 
+const client = mysql.createPool({
+  host: DATABASE_HOST!,
+  port: Number(DATABASE_PORT),
+  user: DATABASE_USER!,
+  password: DATABASE_PASSWORD!,
+});
+
+const bootstrapMysql = async () => {
   const sqlCreateDatabase = "CREATE DATABASE IF NOT EXISTS rinha_backend";
 
   await client.execute(sqlCreateDatabase);
@@ -11,7 +19,7 @@ const bootstrapMysql = async () => {
     CREATE TABLE IF NOT EXISTS rinha_backend.person(
       id VARCHAR(36) PRIMARY KEY,
       name VARCHAR(100) NOT NULL,
-      nickname VARCHAR(32) NOT NULL,
+      nickname VARCHAR(32) NOT NULL UNIQUE,
       birth_date DATE NOT NULL,
       stacks JSON NOT NULL
     );
@@ -20,16 +28,4 @@ const bootstrapMysql = async () => {
   await client.execute(sqlCreateTable);
 };
 
-const clientMysql = async () => {
-  const { DATABASE_HOST, DATABASE_PORT, DATABASE_USER, DATABASE_PASSWORD } =
-    process.env;
-
-  return mysql.createConnection({
-    host: DATABASE_HOST!,
-    port: Number(DATABASE_PORT),
-    user: DATABASE_USER!,
-    password: DATABASE_PASSWORD!,
-  });
-};
-
-export { bootstrapMysql, clientMysql };
+export { bootstrapMysql, client };
