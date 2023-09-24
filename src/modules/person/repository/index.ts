@@ -1,4 +1,4 @@
-import { Pool, ErrorPacketParams } from "mysql2/promise";
+import { Pool } from "mysql2/promise";
 import { createPersonDTO } from "../../../@types";
 
 export class Repository {
@@ -12,9 +12,9 @@ export class Repository {
     stack,
   }: createPersonDTO) => {
     const sql = `
-          INSERT INTO rinha_backend.person(id, name, nickname, birth_date, stacks)
-          Values(?, ?, ?, ?, ?)
-      `;
+      INSERT INTO rinha_backend.person(id, name, nickname, birth_date, stacks)
+      Values(?, ?, ?, ?, ?)
+    `;
 
     await this.client.execute(sql, [userId, nome, apelido, nascimento, stack]);
   };

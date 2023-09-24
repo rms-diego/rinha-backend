@@ -2,6 +2,8 @@ import "dotenv/config";
 import fastify from "fastify";
 import cors from "@fastify/cors";
 
+import { errorMiddleware } from "../error-middleware";
+
 import { client } from "../database/client";
 import { Repository } from "../modules/person/repository";
 import { Service } from "../modules/person/service";
@@ -14,5 +16,6 @@ const controller = new Controller(service);
 const app = fastify();
 app.register(cors);
 app.register(controller.createRoutes);
+app.setErrorHandler(errorMiddleware);
 
 export { app };

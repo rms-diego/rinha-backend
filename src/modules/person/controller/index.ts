@@ -17,6 +17,7 @@ export class Controller {
   };
 
   public createPerson = async (req: FastifyRequest, reply: FastifyReply) => {
+    console.time();
     const { apelido, nome, nascimento, stack } = req.body as createPersonBody;
 
     await this.service.createPerson({
@@ -26,6 +27,7 @@ export class Controller {
       stack,
     });
 
+    console.timeEnd();
     return reply.status(201).send();
   };
 }
