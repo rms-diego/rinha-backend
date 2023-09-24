@@ -11,10 +11,9 @@ export class Controller {
 
     app.post("/pessoas", this.createPerson);
     app.get("/pessoas/:id", this.findById);
+    app.get("/contagem-pessoas", this.countPerson);
 
-    // /contagem-pessoas
     // /pessoas?t=[:termo da busca]
-    // /pessoas/[:id]
   };
 
   public createPerson = async (req: FastifyRequest, reply: FastifyReply) => {
@@ -33,10 +32,20 @@ export class Controller {
   };
 
   public findById = async (req: FastifyRequest, reply: FastifyReply) => {
+    console.time();
     const { id } = req.params as FindByIdParams;
 
     const userFound = await this.service.findById(id);
 
+    console.timeEnd();
     return reply.status(200).send(userFound);
+  };
+
+  public countPerson = async (_req: FastifyRequest, reply: FastifyReply) => {
+    console.time();
+    const totalPersons = await this.service.countPersons();
+
+    console.timeEnd();
+    return reply.status(200).send(totalPersons);
   };
 }

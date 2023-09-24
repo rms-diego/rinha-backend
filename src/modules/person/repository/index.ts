@@ -39,4 +39,16 @@ export class Repository {
 
     return userFound;
   };
+
+  public countPersons = async () => {
+    const sql = `
+      SELECT COUNT(*) AS totalPersons
+      FROM rinha_backend.person 
+    `;
+
+    const countIndex = 0;
+    const [data] = await this.client.execute<RowDataPacket[]>(sql);
+
+    return data[countIndex] as { totalPersons: number };
+  };
 }

@@ -32,4 +32,10 @@ export class Service {
 
     return userFound;
   };
+
+  public countPersons = async () => {
+    const totalPersons = await this.repository.countPersons();
+
+    return totalPersons;
+  };
 }
