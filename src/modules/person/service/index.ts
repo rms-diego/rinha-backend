@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
-import { createPersonBody } from "../../../@types";
+import { CreatePersonBody } from "../../../@types";
 import { Repository } from "../repository";
+import { Exception } from "../../../exception";
 
 export class Service {
   constructor(private repository: Repository) {}
@@ -10,7 +11,7 @@ export class Service {
     apelido,
     nascimento,
     stack,
-  }: createPersonBody) => {
+  }: CreatePersonBody) => {
     const userId = randomUUID();
 
     await this.repository.createPerson({
@@ -20,5 +21,15 @@ export class Service {
       stack,
       userId,
     });
+  };
+
+  public findById = async (userId: string) => {
+    const userFound = await this.repository.findById(userId);
+
+    if (!userFound) {
+      throw new Exception(404, "user does not exists");
+    }
+
+    return userFound;
   };
 }
