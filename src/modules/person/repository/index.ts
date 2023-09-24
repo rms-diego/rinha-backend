@@ -1,5 +1,5 @@
 import { Pool, RowDataPacket } from "mysql2/promise";
-import { CreatePersonDTO, UserFound } from "../../../@types";
+import { CreatePersonDTO, UserFound, UsersFoundByTermDTO } from "@/@types";
 
 export class Repository {
   constructor(private client: Pool) {}
@@ -10,19 +10,28 @@ export class Repository {
     apelido,
     nascimento,
     stack,
+    wrapper,
   }: CreatePersonDTO) => {
     const sql = `
-      INSERT INTO rinha_backend.person(
-        id, 
-        name, 
-        nickname, 
-        birth_date,
-        stacks
-      )
-      VALUES(?, ?, ?, ?, ?)
-    `;
+        INSERT INTO rinha_backend.person(
+          id, 
+          name, 
+          nickname, 
+          birth_date,
+          stacks,
+          wrapper
+        )
+        VALUES(?, ?, ?, ?, ?, ?)
+      `;
 
-    await this.client.execute(sql, [userId, nome, apelido, nascimento, stack]);
+    await this.client.execute(sql, [
+      userId,
+      nome,
+      apelido,
+      nascimento,
+      stack,
+      wrapper,
+    ]);
   };
 
   public findById = async (id: string) => {
@@ -50,5 +59,19 @@ export class Repository {
     const [data] = await this.client.execute<RowDataPacket[]>(sql);
 
     return data[countIndex] as { totalPersons: number };
+  };
+
+  public findByTerm = async (term: string) => {
+    const sql = `
+      SELECT * FROM rinha_backend.person
+      WHERE wrapper LIKE ?
+      LIMIT 50;
+    `;
+
+    const [data] = await this.client.execute<RowDataPacket[]>(sql, [
+      `%${term}%`,
+    ]);
+
+    return data as UsersFoundByTermDTO[];
   };
 }

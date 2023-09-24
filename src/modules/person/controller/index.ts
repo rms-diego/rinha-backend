@@ -1,7 +1,11 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { Service } from "../service";
 
-import { CreatePersonBody, FindByIdParams } from "../../../@types";
+import {
+  CreatePersonBody,
+  FindByIdParams,
+  FindByTermQueryParams,
+} from "@/@types";
 
 export class Controller {
   constructor(private service: Service) {}
@@ -12,12 +16,12 @@ export class Controller {
     app.post("/pessoas", this.createPerson);
     app.get("/pessoas/:id", this.findById);
     app.get("/contagem-pessoas", this.countPerson);
+    app.get("/pessoas", this.findByTerm);
 
     // /pessoas?t=[:termo da busca]
   };
 
   public createPerson = async (req: FastifyRequest, reply: FastifyReply) => {
-    console.time();
     const { apelido, nome, nascimento, stack } = req.body as CreatePersonBody;
 
     await this.service.createPerson({
@@ -27,25 +31,28 @@ export class Controller {
       stack,
     });
 
-    console.timeEnd();
     return reply.status(201).send();
   };
 
   public findById = async (req: FastifyRequest, reply: FastifyReply) => {
-    console.time();
     const { id } = req.params as FindByIdParams;
 
     const userFound = await this.service.findById(id);
 
-    console.timeEnd();
     return reply.status(200).send(userFound);
   };
 
   public countPerson = async (_req: FastifyRequest, reply: FastifyReply) => {
-    console.time();
     const totalPersons = await this.service.countPersons();
 
-    console.timeEnd();
     return reply.status(200).send(totalPersons);
+  };
+
+  public findByTerm = async (req: FastifyRequest, reply: FastifyReply) => {
+    const { term } = req.query as FindByTermQueryParams;
+
+    const usersFound = await this.service.findByTerm(term);
+
+    return reply.status(200).send(usersFound);
   };
 }
