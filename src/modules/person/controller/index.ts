@@ -11,14 +11,15 @@ export class Controller {
   constructor(private service: Service) {}
 
   public createRoutes = async (app: FastifyInstance) => {
-    app.get("/", () => ({ message: "hello, world!" }));
+    app.get("/", () => ({
+      message: "Server is running",
+      port: process.env.PORT,
+    }));
 
     app.post("/pessoas", this.createPerson);
     app.get("/pessoas/:id", this.findById);
     app.get("/contagem-pessoas", this.countPerson);
     app.get("/pessoas", this.findByTerm);
-
-    // /pessoas?t=[:termo da busca]
   };
 
   public createPerson = async (req: FastifyRequest, reply: FastifyReply) => {
