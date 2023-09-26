@@ -6,14 +6,18 @@ import {
   FindByIdParams,
   FindByTermQueryParams,
 } from "@/@types";
+import { randomUUID } from "crypto";
 
 export class Controller {
   constructor(private service: Service) {}
 
   public createRoutes = async (app: FastifyInstance) => {
+    const instanceId = randomUUID();
+
     app.get("/", () => ({
       message: "Server is running",
       port: process.env.PORT,
+      id: instanceId,
     }));
 
     app.post("/pessoas", this.createPerson);

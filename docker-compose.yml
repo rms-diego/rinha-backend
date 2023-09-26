@@ -37,9 +37,9 @@ services:
         condition: service_healthy
 
   api2:
-    image: node:alpine
+    build: .
     ports:
-      - 3001:3000
+      - 3001:3001
     environment:
       - PORT=3001
       - DATABASE_HOST=db
