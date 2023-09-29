@@ -1,10 +1,9 @@
-// create user types
-export type CreatePersonBody = {
+export interface CreatePersonBody {
   apelido: string;
   nome: string;
   nascimento: Date;
-  stack: Array<string>;
-};
+  stack: string[];
+}
 
 export interface CreatePersonDTO extends CreatePersonBody {
   userId: string;
@@ -28,7 +27,7 @@ export type UserFound = {
 // find by term types
 
 export type FindByTermQueryParams = {
-  term: string;
+  t: string;
 };
 
 export interface UsersFoundByTermDTO {

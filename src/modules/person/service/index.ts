@@ -29,13 +29,15 @@ export class Service {
       userId,
       wrapper,
     });
+
+    return userId;
   };
 
   public findById = async (userId: string) => {
     const userFound = await this.repository.findById(userId);
 
     if (!userFound) {
-      throw new Exception(404, "user does not exists");
+      throw new Exception(404);
     }
 
     return userFound;

@@ -8,6 +8,7 @@ const client = mysql.createPool({
   port: Number(DATABASE_PORT),
   user: DATABASE_USER!,
   password: DATABASE_PASSWORD!,
+  connectionLimit: 50,
 });
 
 const bootstrapMysql = async () => {
@@ -21,8 +22,8 @@ const bootstrapMysql = async () => {
       name VARCHAR(100) NOT NULL,
       nickname VARCHAR(32) NOT NULL UNIQUE,
       birth_date DATE NOT NULL,
-      stacks JSON NOT NULL,
-      wrapper VARCHAR(1000) NOT NULL
+      stacks JSON,
+      wrapper VARCHAR(750) NOT NULL
     );
   `;
 

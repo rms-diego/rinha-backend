@@ -1,8 +1,7 @@
-export class Exception extends Error {
+export class Exception {
   public readonly statusCode: number;
 
-  constructor(statusCode = 500, message?: string) {
-    super(message);
+  constructor(statusCode = 500) {
     this.statusCode = statusCode;
   }
 }

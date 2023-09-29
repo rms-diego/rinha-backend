@@ -6,7 +6,9 @@ import {
   FindByIdParams,
   FindByTermQueryParams,
 } from "@/@types";
+
 import { randomUUID } from "crypto";
+import { validateCreateUser } from "@/middleware/validate-create-user";
 
 export class Controller {
   constructor(private service: Service) {}
@@ -20,7 +22,12 @@ export class Controller {
       id: instanceId,
     }));
 
-    app.post("/pessoas", this.createPerson);
+    app.post(
+      "/pessoas",
+      // { preHandler: [validateCreateUser] },
+      this.createPerson
+    );
+
     app.get("/pessoas/:id", this.findById);
     app.get("/contagem-pessoas", this.countPerson);
     app.get("/pessoas", this.findByTerm);
@@ -29,12 +36,14 @@ export class Controller {
   public createPerson = async (req: FastifyRequest, reply: FastifyReply) => {
     const { apelido, nome, nascimento, stack } = req.body as CreatePersonBody;
 
-    await this.service.createPerson({
+    const userId = await this.service.createPerson({
       apelido,
       nome,
-      nascimento,
+      nascimento: new Date(nascimento),
       stack,
     });
+
+    reply.header("Location", `/pessoas/${userId}`);
 
     return reply.status(201).send();
   };
@@ -54,9 +63,9 @@ export class Controller {
   };
 
   public findByTerm = async (req: FastifyRequest, reply: FastifyReply) => {
-    const { term } = req.query as FindByTermQueryParams;
+    const { t } = req.query as FindByTermQueryParams;
 
-    const usersFound = await this.service.findByTerm(term);
+    const usersFound = await this.service.findByTerm(t);
 
     return reply.status(200).send(usersFound);
   };

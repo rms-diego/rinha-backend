@@ -1,6 +1,6 @@
 import { type QueryError } from "mysql2/promise";
 import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
-import { Exception } from "./exception";
+import { Exception } from "../exception";
 
 const isSqlError = (value: Error): value is QueryError => {
   return typeof value === "object" && "sqlState" in value;
@@ -16,7 +16,7 @@ export const errorMiddleware = async (
   }
 
   if (error instanceof Exception) {
-    return reply.status(error.statusCode).send({ error: error.message });
+    return reply.status(error.statusCode).send();
   }
 
   return reply.status(500).send({ error: error.message });
