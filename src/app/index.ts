@@ -13,7 +13,9 @@ const repository = new Repository(client);
 const service = new Service(repository);
 const controller = new Controller(service);
 
-const app = fastify();
+const app = fastify({
+  logger: true,
+});
 app.register(cors);
 app.register(controller.createRoutes);
 app.setErrorHandler(errorMiddleware);
