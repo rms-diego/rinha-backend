@@ -2,9 +2,10 @@ import { randomUUID } from "crypto";
 import { CreatePersonBody } from "@/@types";
 import { Repository } from "../repository";
 import { Exception } from "@/exception";
+import { Redis } from "ioredis";
 
 export class Service {
-  constructor(private repository: Repository) {}
+  constructor(private repository: Repository, private redis: Redis) {}
 
   public createPerson = async ({
     nome,
@@ -12,14 +13,17 @@ export class Service {
     nascimento,
     stack,
   }: CreatePersonBody) => {
+    const userAlreadyExists = await this.redis.get(apelido);
+
+    if (userAlreadyExists) {
+      throw new Exception(422);
+    }
+
     const userId = randomUUID();
 
-    const wrapper = JSON.stringify({
-      nome,
-      apelido,
-      nascimento: new Date(nascimento),
-      stack,
-    });
+    const wrapper = JSON.stringify(`
+      ${nome} | ${apelido} | ${new Date(nascimento).toISOString()} | ${stack}
+    `);
 
     await this.repository.createPerson({
       nome,
@@ -30,11 +34,25 @@ export class Service {
       wrapper,
     });
 
+    await this.redis.set(apelido, JSON.stringify(true));
+
+    await this.redis.set(
+      userId,
+      JSON.stringify({
+        nome,
+        apelido,
+        nascimento: new Date(nascimento),
+        stack,
+        userId,
+        wrapper,
+      })
+    );
+
     return userId;
   };
 
   public findById = async (userId: string) => {
-    const userFound = await this.repository.findById(userId);
+    const userFound = await this.redis.get(userId);
 
     if (!userFound) {
       throw new Exception(404);
