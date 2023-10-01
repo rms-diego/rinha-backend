@@ -257,7 +257,7 @@ Criar um projeto escalável, para suportar centenas de requisições por segundo
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 - Ter instalado o Docker instalado.
-- Verificar se não tem nenhum processo rodando nas portas: <strong>3000</strong>, <strong>3001</strong>, <strong>9999</strong>, <strong>6379</strong>
+- Verificar se não tem nenhum processo rodando nas portas: <strong>3000</strong>, <strong>3001</strong>, <strong>9999</strong>, <strong>6379</strong>, <strong>3306</strong>
 
 ## 🚀 Rodando o projeto
 
