@@ -65,6 +65,10 @@ export class Controller {
   public findByTerm = async (req: FastifyRequest, reply: FastifyReply) => {
     const { t } = req.query as FindByTermQueryParams;
 
+    if (!t) {
+      return reply.status(400).send();
+    }
+
     const usersFound = await this.service.findByTerm(t);
 
     return reply.status(200).send(usersFound);

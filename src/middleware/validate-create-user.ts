@@ -11,8 +11,16 @@ export const validateCreateUser = (
 
   const isValidDate = new Date(nascimento).getTime();
 
+  if (!apelido) {
+    throw new Exception(422);
+  }
+
   if (typeof apelido !== "string" || apelido.length > 32) {
     throw new Exception(400);
+  }
+
+  if (!nome) {
+    throw new Exception(422);
   }
 
   if (typeof nome !== "string" || nome.length > 100) {
@@ -28,7 +36,7 @@ export const validateCreateUser = (
   }
 
   if (!stack) {
-    return done;
+    return done();
   }
 
   const isInvalidValue = stack.some((stack) => typeof stack !== "string");

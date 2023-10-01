@@ -21,9 +21,9 @@ export class Service {
 
     const userId = randomUUID();
 
-    const wrapper = JSON.stringify(`
-      ${nome} | ${apelido} | ${new Date(nascimento).toISOString()} | ${stack}
-    `);
+    const wrapper = `${nome} | ${apelido} | ${new Date(
+      nascimento
+    ).toISOString()} | ${stack}`;
 
     await this.repository.createPerson({
       nome,
@@ -70,14 +70,6 @@ export class Service {
   public findByTerm = async (term: string) => {
     const personsFound = await this.repository.findByTerm(term);
 
-    const serialize = personsFound.map((person) => ({
-      id: person.id,
-      nome: person.name,
-      apelido: person.nickname,
-      nascimento: person.birth_date,
-      stack: person.stacks,
-    }));
-
-    return serialize;
+    return personsFound;
   };
 }

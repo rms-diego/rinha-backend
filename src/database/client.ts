@@ -21,7 +21,7 @@ const bootstrapMysql = async () => {
       id VARCHAR(36) PRIMARY KEY,
       name VARCHAR(100) NOT NULL,
       nickname VARCHAR(32) NOT NULL UNIQUE,
-      birth_date DATE NOT NULL,
+      birthday DATE NOT NULL,
       stacks JSON,
       wrapper VARCHAR(750) NOT NULL
     );

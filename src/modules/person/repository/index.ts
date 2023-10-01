@@ -13,16 +13,16 @@ export class Repository {
     wrapper,
   }: CreatePersonDTO) => {
     const sql = `
-        INSERT INTO rinha_backend.person(
-          id, 
-          name, 
-          nickname, 
-          birth_date,
-          stacks,
-          wrapper
-        )
-        VALUES(?, ?, ?, ?, ?, ?)
-      `;
+          INSERT INTO rinha_backend.person(
+            id, 
+            name, 
+            nickname, 
+            birthday,
+            stacks,
+            wrapper
+          )
+          VALUES(?, ?, ?, ?, ?, ?)
+        `;
 
     await this.client.execute(sql, [
       userId,
@@ -34,20 +34,20 @@ export class Repository {
     ]);
   };
 
-  public findById = async (id: string) => {
-    const sql = `
-      SELECT id, name, nickname, birth_date, stacks 
-      FROM rinha_backend.person 
-      WHERE id = ?;
-    `;
+  // public findById = async (id: string) => {
+  //   const sql = `
+  //     SELECT id, name, nickname, birth_date, stacks
+  //     FROM rinha_backend.person
+  //     WHERE id = ?;
+  //   `;
 
-    const [data] = await this.client.execute<RowDataPacket[]>(sql, [id]);
+  //   const [data] = await this.client.execute<RowDataPacket[]>(sql, [id]);
 
-    const userIndex = 0;
-    const userFound = data[userIndex] as UserFound;
+  //   const userIndex = 0;
+  //   const userFound = data[userIndex] as UserFound;
 
-    return userFound;
-  };
+  //   return userFound;
+  // };
 
   public countPersons = async () => {
     const sql = `
@@ -63,7 +63,7 @@ export class Repository {
 
   public findByTerm = async (term: string) => {
     const sql = `
-      SELECT * FROM rinha_backend.person
+      SELECT id, name, nickname, birthday, stacks FROM rinha_backend.person
       WHERE wrapper LIKE ?
       LIMIT 50;
     `;
