@@ -268,3 +268,9 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 ```shell
   docker compose up --build
 ```
+
+Para testar se a api está rodando, basta executar uma requisição
+
+```shell
+  curl http://localhost:9999 # Requisição de exemplo
+```
