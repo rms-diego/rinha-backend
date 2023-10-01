@@ -27,13 +27,15 @@ export const validateCreateUser = (
     throw new Exception(400);
   }
 
-  const invalidValue = stack.some(
-    (stack) => typeof stack !== "string" && stack !== null
-  );
+  if (!stack) {
+    return done;
+  }
 
-  // if (!invalidValue) {
-  //   throw new Exception(400);
-  // }
+  const isInvalidValue = stack.some((stack) => typeof stack !== "string");
+
+  if (isInvalidValue) {
+    throw new Exception(400);
+  }
 
   done();
 };

@@ -24,7 +24,7 @@ export class Controller {
 
     app.post(
       "/pessoas",
-      // { preHandler: [validateCreateUser] },
+      { preHandler: [validateCreateUser] },
       this.createPerson
     );
 
