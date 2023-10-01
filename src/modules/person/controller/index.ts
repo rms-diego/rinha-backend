@@ -59,7 +59,9 @@ export class Controller {
   public countPerson = async (_req: FastifyRequest, reply: FastifyReply) => {
     const totalPersons = await this.service.countPersons();
 
-    return reply.status(200).send(totalPersons);
+    return reply
+      .status(200)
+      .send(`COUNT PERSONS: ${totalPersons.totalPersons}`);
   };
 
   public findByTerm = async (req: FastifyRequest, reply: FastifyReply) => {
