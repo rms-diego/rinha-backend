@@ -21,9 +21,45 @@
 
 > Resultado do teste de carga.
 
+## 🖖🏼 Objetivo
+
+Criar um projeto escalável, para suportar centenas de requisições por segundo, atendendo o maior numero de pessoas possível com a maxima eficiência possível.
+
+## 💻 Pré-requisitos
+
+Antes de começar, verifique se você atendeu aos seguintes requisitos:
+
+- Ter instalado o Docker instalado.
+- Verificar se não tem nenhum processo rodando nas portas: <strong>3000</strong>, <strong>3001</strong>, <strong>9999</strong>, <strong>6379</strong>, <strong>3306</strong>
+
+## 🚀 Rodando o projeto
+
+<strong>Certifique-se de estar na raiz do projeto</strong>
+
 </br>
 
-## 📂 Arquitetura - MSC (Controller -> Services -> Repository)
+```shell
+  docker compose up --build
+```
+
+Para testar se a api está rodando, basta executar uma requisição
+
+```shell
+  curl http://localhost:9999 # Requisição de exemplo
+```
+
+Comando para executar os testes de carga
+
+**Terminais unix**
+
+```shell
+  ./teste/gatling/install-gatling \
+    && ./teste/gatling/run-test
+```
+
+**OBS: conceder permissão de execução para rodar os shells scripts**
+
+## 📂 Arquitetura - Controller -> Services -> Repository
 
 ```
 ├── modules/
@@ -245,32 +281,3 @@ Uma requisição `GET /pessoas?t=Python`, deveria retornar o seguinte:
 ### Contagem de Pessoas `GET /contagem-pessoas`
 
 Este é um endpoint especial que NÃO SERÁ TESTADO (portanto, não se preocupe com sua performance) e deverá retornar em texto puro o número de registros de pessoas e qq status code na faixa de 2XX. Ele será usado para validar o número de requisições de criação bem sucedidas durante o teste de stress, por isso não use cache ou qualquer outra forma de materialização que seja eventualmente consistente.
-
-<br >
-
-## 🖖🏼 Objetivo
-
-Criar um projeto escalável, para suportar centenas de requisições por segundo, atendendo o maior numero de pessoas possível com a maxima eficiência possível.
-
-## 💻 Pré-requisitos
-
-Antes de começar, verifique se você atendeu aos seguintes requisitos:
-
-- Ter instalado o Docker instalado.
-- Verificar se não tem nenhum processo rodando nas portas: <strong>3000</strong>, <strong>3001</strong>, <strong>9999</strong>, <strong>6379</strong>, <strong>3306</strong>
-
-## 🚀 Rodando o projeto
-
-<strong>Certifique-se de estar na raiz do projeto</strong>
-
-</br>
-
-```shell
-  docker compose up --build
-```
-
-Para testar se a api está rodando, basta executar uma requisição
-
-```shell
-  curl http://localhost:9999 # Requisição de exemplo
-```
